@@ -18,6 +18,6 @@ var connectionSchema = new Schema({
       for: {}
     }
   }
-});
+}, { minimize: false } );
 
 module.exports = mongoose.model('connection', connectionSchema);
