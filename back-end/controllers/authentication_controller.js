@@ -36,7 +36,7 @@ exports.signup = function(req, res, next) {
       connectionId: null,
       firstName: firstName,
       lastName: lastName,
-      imageUrl: 'http://res.cloudinary.com/jaredtan/image/upload/v1504344078/default-user_czolr6.png',
+      imageUrl: 'https://www.workplaceleadership.com.au/app/themes/cwl/assets/img/regular_res/default-user.png',
       birthday:  new Date(1990, 1, 2),
       anniversary: new Date()
     });
