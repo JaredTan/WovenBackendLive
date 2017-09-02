@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 var connectionSchema = new Schema({
   todos: [
     {
-      text: {type: String}
+      text: {type: String},
+      checked: {type: Boolean, default: false}
     }
   ],
   plant: {
