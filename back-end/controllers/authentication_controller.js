@@ -26,6 +26,11 @@ exports.signup = function(req, res, next) {
     return res.status(422).json({error: "You must provide an email and password"});
   }
 
+  User.findOne({email: partnerEmail}, function(err, partner) {
+    if (err) { return next(err) }
+    if (partner) { return res.status(422).json({error: "Partner taken"})}
+  });
+
   User.findOne({email: email}, function(err, existingUser) {
     if (err) { return next(err) }
     if (existingUser) {return res.status(422).json({error: "Email taken"})}
@@ -40,6 +45,7 @@ exports.signup = function(req, res, next) {
       birthday:  new Date(1990, 1, 2),
       anniversary: new Date()
     });
+
     user.save(function(err) {
       if (err) { return next(err) }
       res.json({user_id: user._id, token: tokenForUser(user)});
