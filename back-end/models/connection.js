@@ -5,7 +5,7 @@ var connectionSchema = new Schema({
   todos: [
     {
       text: {type: String},
-      checked: {type: Boolean, default: false}
+      checked: Boolean
     }
   ],
   plant: {

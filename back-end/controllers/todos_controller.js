@@ -39,6 +39,7 @@ exports.destroy = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+  console.log('hi');
   Connection.findOne({_id: req.params.connectionId}, (err, connection) => {
     let todoId = req.params.todoId;
     connection.todos.forEach( (todo) => {
@@ -48,7 +49,9 @@ exports.update = function(req, res, next) {
     });
     connection.save(function(err) {
       if (err) { return next(err) }
-      res.json({});
+      Connection.findOne({_id: req.params.connectionId}, (err, connection) => {
+        res.json({todos: connection.todos});
+      });
     });
   });
 }
