@@ -41,6 +41,7 @@ router.route('/connections/:connectionId/todos')
 
 router.route('/connections/:connectionId/todos/:todoId')
   .delete(TodosController.destroy);
+  .patch(TodosController.update);
 
   // Plant Routes
   // -----------------------------------------------------------------------------
