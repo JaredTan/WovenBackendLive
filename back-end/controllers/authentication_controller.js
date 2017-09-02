@@ -4,7 +4,7 @@ const jwt = require('jwt-simple');
 const config = require('../config');
 
 function tokenForUser(user) {
-  var timestamp = new Date().getTime();
+  let timestamp = new Date().getTime();
   return jwt.encode({
     sub: user.id,
     iat: timestamp
@@ -12,44 +12,42 @@ function tokenForUser(user) {
 }
 
 exports.signin = function(req, res, next) {
-  var user = req.user;
+  let user = req.user;
   res.send({token: tokenForUser(user), user_id: user._id, connectionId: user.connectionId});
 }
 
 exports.signup = function(req, res, next) {
-  var email = req.body.email;
-  var password = req.body.password;
-  var firstName = req.body.firstName;
-  var lastName = req.body.lastName;
-  var partnerEmail = req.body.partnerEmail;
+  let email = req.body.email;
+  let password = req.body.password;
+  let firstName = req.body.firstName;
+  let lastName = req.body.lastName;
+  let partnerEmail = req.body.partnerEmail;
   if (!email || !password) {
     return res.status(422).json({error: "You must provide an email and password"});
   }
 
-  User.findOne({email: partnerEmail}, function(err, partner) {
-    if (err) { return next(err) }
-    if (partner) { return res.status(422).json({error: "Partner taken"})}
-  });
-
   User.findOne({email: email}, function(err, existingUser) {
     if (err) { return next(err) }
     if (existingUser) {return res.status(422).json({error: "Email taken"})}
-    var user = new User({
-      email: email,
-      password: password,
-      partnerEmail: partnerEmail,
-      connectionId: null,
-      firstName: firstName,
-      lastName: lastName,
-      imageUrl: 'http://res.cloudinary.com/jaredtan/image/upload/v1504344078/default-user_czolr6.png',
-      birthday:  new Date(1990, 1, 2),
-      anniversary: new Date()
-    });
-
-    user.save(function(err) {
+    User.findOne({email: partnerEmail}, function(err, partner) {
       if (err) { return next(err) }
-      res.json({user_id: user._id, token: tokenForUser(user)});
-    });
+      if (partner) {return res.status(422).json({error: "Partner connected."})}
+      let user = new User({
+        email: email,
+        password: password,
+        partnerEmail: partnerEmail,
+        connectionId: null,
+        firstName: firstName,
+        lastName: lastName,
+        imageUrl: 'http://res.cloudinary.com/jaredtan/image/upload/v1504344078/default-user_czolr6.png',
+        birthday:  new Date(1990, 1, 2),
+        anniversary: new Date()
+      });
+      user.save(function(err) {
+        if (err) { return next(err) }
+        res.json({user_id: user._id, token: tokenForUser(user)});
+      });
+    })
     User.findOne( {email: user.partnerEmail}, (err, partner) => {
       if (partner && partner.partnerEmail === user.email) {
         let newConnection = new Connection();
