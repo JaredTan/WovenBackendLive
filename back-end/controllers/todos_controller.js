@@ -39,7 +39,6 @@ exports.destroy = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
-  console.log('hi');
   Connection.findOne({_id: req.params.connectionId}, (err, connection) => {
     let todoId = req.params.todoId;
     connection.todos.forEach( (todo) => {

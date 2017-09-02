@@ -36,7 +36,7 @@ exports.signup = function(req, res, next) {
       connectionId: null,
       firstName: firstName,
       lastName: lastName,
-      imageUrl: 'https://d1ld1je540hac5.cloudfront.net/assets/img/default_avatar.png',
+      imageUrl: 'http://res.cloudinary.com/jaredtan/image/upload/v1504344078/default-user_czolr6.png',
       birthday:  new Date(1990, 1, 2),
       anniversary: new Date()
     });
@@ -47,7 +47,7 @@ exports.signup = function(req, res, next) {
     User.findOne( {email: user.partnerEmail}, (err, partner) => {
       if (partner && partner.partnerEmail === user.email) {
         let newConnection = new Connection();
-        newConnection.plant.messages.for = { 
+        newConnection.plant.messages.for = {
           [user.firstName]: '',
           [partner.firstName]: ''
         };
