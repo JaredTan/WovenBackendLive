@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
-var validateEmail = (email) => {
+const validateEmail = (email) => {
   return (/\S+@\S+\.\S+/).test(email);
 };
 
-var userSchema = new Schema({
+const userSchema = new Schema({
   email: {
     type: String,
     unique: true,
@@ -45,7 +45,7 @@ var userSchema = new Schema({
 });
 
 userSchema.pre('save', function(next) {
-  var user = this;
+  const user = this;
   if (user.isNew || user.isModified('password')) {
     bcrypt.genSalt(10, function(err, salt) {
       if (err) { return next(err); }

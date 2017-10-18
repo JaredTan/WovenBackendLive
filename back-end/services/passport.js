@@ -5,18 +5,18 @@ const LocalStrategy = require('passport-local');
 const User = require('../models/user');
 const config = require('../config');
 
-var localOptions = {
+const localOptions = {
   usernameField: 'email'
 };
 
-var localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
+const localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
   // Verify this username and password
   User.findOne({email: email.toLowerCase()}, function(err, user) {
     if (err) { return done(err) }
     if (!user) { return done(null, false) }
     User.findOne({email: user.partnerEmail.toLowerCase()}, function(err, partner) {
       if (err) {return done(err)}
-      if (!partner) {return done(null, false)}
+      if (!partner) {return done(null, false)};
     user.comparePassword(password, function(err, isMatch) {
       if (err) { return done(err) }
       if (!isMatch) { return done(null, false) }
@@ -26,12 +26,12 @@ var localStrategy = new LocalStrategy(localOptions, function(email, password, do
   });
 });
 
-var jwtOptions = {
+const jwtOptions = {
   secretOrKey: config.secret,
   jwtFromRequest: ExtractJwt.fromHeader('authorization')
 };
 
-var jwtStrategy = new JwtStrategy(jwtOptions, function(payload, done) {
+const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, done) {
   User.findById(payload.sub, function(err, user) {
     if (err) { return done(err, false) }
     if (user) {

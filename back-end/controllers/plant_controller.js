@@ -10,7 +10,6 @@ exports.show = function(req, res, next) {
 
 exports.update = function(req, res, next) {
   const plantQuery = {_id: req.params.connectionId};
-
   Connection.update(plantQuery, {
     plant: req.body.plantObj
   }).then((err) => {
@@ -20,5 +19,4 @@ exports.update = function(req, res, next) {
       });
     });
   });
-
 };

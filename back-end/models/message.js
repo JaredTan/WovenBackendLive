@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var messageSchema = new Schema({
+const messageSchema = new Schema({
   text: {
     type: String
   },
@@ -19,7 +19,6 @@ var messageSchema = new Schema({
       type: String
     }
   },
-
 });
 
 module.exports = mongoose.model('message', messageSchema);
