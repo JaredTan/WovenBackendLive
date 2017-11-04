@@ -55,7 +55,7 @@ exports.signup = function(req, res, next) {
     User.findOne( {email: user.partnerEmail}, (err, partner) => {
       if (partner && partner.partnerEmail === user.email) {
 
-        // Create connection if there's a match with partner, else return 422.
+        // Create connection if there's a match with partner.
         let newConnection = new Connection();
         newConnection.plant.messages.for = {
           [user.firstName]: '',
