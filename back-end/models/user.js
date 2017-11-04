@@ -44,6 +44,7 @@ const userSchema = new Schema({
   }
 });
 
+// Generate password digest hash for user
 userSchema.pre('save', function(next) {
   const user = this;
   if (user.isNew || user.isModified('password')) {
@@ -60,6 +61,7 @@ userSchema.pre('save', function(next) {
   }
 });
 
+// Validate password matches password digest
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
     if (err) { return callback(err); }

@@ -7,10 +7,10 @@ const mongoose = require('mongoose');
 const User = require('./back-end/models/user');
 const Message = require('./back-end/models/message');
 
-var app = express();
-var server = http.Server(app);
-var websocket = socketio(server);
-var router = require('./back-end/services/router');
+const app = express();
+const server = http.Server(app);
+const websocket = socketio(server);
+const router = require('./back-end/services/router');
 
 if (process.env.NODE_ENV=='production') {
   mongoose.connect(process.env.MONGO_URL);
@@ -18,29 +18,25 @@ if (process.env.NODE_ENV=='production') {
   mongoose.connect('mongodb://localhost:Woven/Woven');
 }
 
-// mongoose.connect('mongodb://localhost:Woven/Woven');
-
-// var API_URL = 'https://damp-forest-12839.herokuapp.com/v1';
-
+// Live: const API_URL = 'https://damp-forest-12839.herokuapp.com/v1';
 
 app.use(morgan('combined'));
 app.use(bodyParser.json());
 app.use('/v1', router);
 
-var PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 console.log('listening on', PORT);
 server.listen(PORT);
 
-var sessionConnection = null;
+let sessionConnection = null;
 websocket.on('connection', (socket) => {
   socket.on('userJoined', (userId) => onUserJoined(userId, socket));
   socket.on('message', (message) => onMessageReceived(message, socket));
 });
 
-
 function onUserJoined(userId, socket) {
-  var objId = mongoose.Types.ObjectId(userId);
+  const objId = mongoose.Types.ObjectId(userId);
   User.findOne({_id: objId}, (err, user) => {
 
     sessionConnection = user.connectionId;
@@ -63,13 +59,13 @@ function _sendExistingMessages(socket) {
 
 // Save the message to the db and send all sockets but the sender.
 function _sendAndSaveMessage(message, socket) {
-  var messageData = {
+  const messageData = {
     text: message.text,
     user: message.user,
     createdAt: new Date(message.createdAt),
   };
 
-  var connectionId = message.user.connectionId;
+  const connectionId = message.user.connectionId;
 
   Message.create(messageData, (err, newMessage) => {
     socket.broadcast.to(connectionId).emit('message', [newMessage]);

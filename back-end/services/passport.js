@@ -10,7 +10,7 @@ const localOptions = {
 };
 
 const localStrategy = new LocalStrategy(localOptions, function(email, password, done) {
-  // Verify this username and password
+  // Verify username and password
   User.findOne({email: email.toLowerCase()}, function(err, user) {
     if (err) { return done(err) }
     if (!user) { return done(null, false) }
@@ -32,6 +32,7 @@ const jwtOptions = {
 };
 
 const jwtStrategy = new JwtStrategy(jwtOptions, function(payload, done) {
+  // Verify current user's token
   User.findById(payload.sub, function(err, user) {
     if (err) { return done(err, false) }
     if (user) {

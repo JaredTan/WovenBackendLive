@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const Message = require('../models/message');
 
 exports.show = function(req, res, next) {
   User.findOne({_id: req.params.user_id}, function(err, user) {

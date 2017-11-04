@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var connectionSchema = new Schema({
+const connectionSchema = new Schema({
   todos: [
     {
       text: {type: String},
